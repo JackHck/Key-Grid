@@ -9,13 +9,9 @@ def load_h5(h5_filename, normalize=False, include_label=False):
     data = f['data'][:]  # (n, 2048, 3)
     #print(data)
     if normalize:
-        # nmean = numpy.mean(data, axis=1, keepdims=True)
-        # nstd = numpy.std(data, axis=1, keepdims=True)
-        # nstd = numpy.mean(nstd, axis=-1, keepdims=True)
         dmin = data.min(axis=1, keepdims=True).min(axis=-1, keepdims=True)
         dmax = data.max(axis=1, keepdims=True).max(axis=-1, keepdims=True)
         data = (data - dmin) / (dmax - dmin)
-        # data = (data - nmean) / nstd
         data = 2.0 * (data - 0.5)
     if include_label:
         label = f['label'][:]
@@ -63,10 +59,8 @@ def dataset_split(path):
     return list(tr), list(te)
 
 
-#subclass =0
 DATASET = './shapenet/train'
 for i in range(40):
-#subclass = 50
     x, xl = all_h5(DATASET, True, True, subclasses=(i,), sample=None)  # n x 2048 x 3
     x = x.reshape(-1, np.array(x).shape[-1])
     np.savetxt('./shapenet/dataset'+'/'+"traindata"+str(i)+".txt", x) 
