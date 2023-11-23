@@ -4,7 +4,7 @@
 This repository provides the  code for paper: <br>
 **Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features**
 <p align="center">
-    <img src="./image/allmethod.png" width="500"><br>
+    <img src="./image/allmethod.png" width="1000"><br>
   
 ## Overview
 Detecting 3D keypoints with semantic consistency is widely used in many scenarios such as pose estimation, shape registration and robotics.
