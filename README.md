@@ -15,7 +15,7 @@ Unlike previous work, we leverage the identified keypoint information to form a 
 Grid heatmap is a novel concept that represents the latent variables for grid points sampled uniformly in the 3D cubic space, where these variables are the shortest distance between the grid points and the ``skeleton” connected by keypoint pairs.
 Meanwhile, we incorporate the information from each layer of the encoder into the reconstruction process of the point cloud.
 We conduct an extensive evaluation of Key-Grid on  a list of benchmark datasets. 
-\method achieves the state-of-the-art performance on the semantic consistency and position accuracy of keypoints.
+Key-Grid achieves the state-of-the-art performance on the semantic consistency and position accuracy of keypoints.
 Moreover, we demonstrate the robustness of Key-Gridto noise and downsampling. 
 In addition, we achieve SE-(3) invariance of keypoints though generalizing Key-Grid to a SE(3)-invariant backbone.
 ## Requiremenmts
