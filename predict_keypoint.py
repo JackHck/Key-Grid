@@ -14,7 +14,7 @@ import open3d as o3d
 import os
 
 arg_parser = argparse.ArgumentParser(description="Predictor for Keypoint on KeypointNet dataset.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./Shapenet/model/chair_10.pt',
+arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./shapenet/model/chair_10.pt',
                         help='Model checkpoint file path to load.')
 arg_parser.add_argument('-d', '--device', type=str, default='cuda',
                         help='Pytorch device for predicting.')
@@ -32,7 +32,7 @@ net.eval()
 
 out_kpcd = []
 
-x = np.loadtxt("./fold/for_chengkai_pants/seqdata.txt")
+x = np.loadtxt("./shapenet/dataset/testdata14.txt")
 x = x.reshape(int(x.shape[0]/2048), 2048, 3)
 
 with torch.no_grad():
@@ -41,4 +41,4 @@ for kp in key_points:
     out_kpcd.append(kp)
 for i in range(len(out_kpcd)):
     out_kpcd[i] = out_kpcd[i].cpu().numpy()
-np.savetxt('./Shapenet/keypoint/chair_keypoint.txt', np.array(out_kpcd).reshape(-1,np.array(out_kpcd).shape[-1]))    
+np.savetxt('./shapenet/keypoint/chair_keypoint.txt', np.array(out_kpcd).reshape(-1,np.array(out_kpcd).shape[-1]))    
