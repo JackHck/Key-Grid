@@ -11,16 +11,12 @@ import argparse
 
 
 arg_parser = argparse.ArgumentParser(description="Evaluation for detected keypoints.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-arg_parser.add_argument('-a', '--annotation-json', type=str, default='./shapenet/annotations/vessel.json',
+arg_parser.add_argument('-a', '--annotation-json', type=str, default='./shapenet/annotations/chair.json',
                         help='Annotation JSON file path from KeypointNet dataset.')
 arg_parser.add_argument('-i', '--pcd-path', type=str, default='./shapenet/pcd',
                         help='Point cloud file folder path from KeypointNet dataset.')
-arg_parser.add_argument('-p', '--prediction', type=str, default='./shapenet/keypoint/vessel_ours.npz',
+arg_parser.add_argument('-p', '--prediction', type=str, default='./shapenet/keypoint/chair.npz',
                         help='Prediction file from predictor output.')
-#arg_parser.add_argument('--op-align-fwd', action='store_true',
-#                        help='Computes forward alignment score.')
-#arg_parser.add_argument('--op-align-bwd', action='store_true',
-#                        help='Computes backward alignment score.')
 arg_parser.add_argument('--op-miou', default='True', 
                         help='Show miou value')
 
@@ -37,58 +33,6 @@ def naive_read_pcd(path):
     data = np.asarray(lines)
     pc = np.array(data[:, :3], dtype=np.float)
     return pc
-
-
-def fwd_alignment_scores():
-    preds = []
-    for entry, kpcd, nfact in zip(kpn_ds, predicted['kpcd'], predicted['nfact']):
-        dmax = nfact[0]
-        dmin = nfact[1]
-        ground_truths = []
-        gtkp = entry['keypoints']
-        for kp in gtkp:
-            nkp = (kp['xyz'] - dmin) / (dmax - dmin)
-            nkp = 2.0 * (nkp - 0.5)
-            ground_truths.append(nkp)
-        ground_truths = np.array(ground_truths)  # k2 x 3
-        kpcd_e = np.expand_dims(kpcd, 1)  # k1 x 1 x 3
-        gt_e = np.expand_dims(ground_truths, 0)  # 1 x k2 x 3
-        dist = np.sum(np.square(kpcd_e - gt_e), -1)  # k1 x k2
-        argminfwd = np.argmin(dist, -1)  # k1
-        preds.append([gtkp[argm]['semantic_id'] for argm in argminfwd])
-    preds = np.array(preds, dtype=np.int32)  # n x k1
-    acc = []
-    for pa in preds:
-        for pb in preds:
-            acc.append(np.mean(pa == pb))
-    return np.mean(acc)
-
-
-def bwd_alignment_scores():
-    preds = collections.defaultdict(list)
-    for entry, kpcd, nfact in zip(kpn_ds, predicted['kpcd'], predicted['nfact']):
-        dmax = nfact[0]
-        dmin = nfact[1]
-        ground_truths = []
-        gtkp = entry['keypoints']
-        for kp in gtkp:
-            nkp = (kp['xyz'] - dmin) / (dmax - dmin)
-            nkp = 2.0 * (nkp - 0.5)
-            ground_truths.append(nkp)
-        ground_truths = np.array(ground_truths)  # k2 x 3
-        kpcd_e = np.expand_dims(kpcd, 1)  # k1 x 1 x 3
-        gt_e = np.expand_dims(ground_truths, 0)  # 1 x k2 x 3
-        dist = np.sum(np.square(kpcd_e - gt_e), -1)  # k1 x k2
-        argminbwd = np.argmin(dist, -2)  # k2
-        for i in range(len(gtkp)):
-            sem = gtkp[i]['semantic_id']
-            preds[sem].append(argminbwd[i])
-    q = []
-    for semarr in preds.values():
-        semarr = np.array(semarr, dtype=np.int16)
-        q.append(np.mean(np.expand_dims(semarr, -1) == np.expand_dims(semarr, 0)))
-    return np.mean(q)
-
 
 def mIoU(threshold):
     kps = []
@@ -111,7 +55,6 @@ def mIoU(threshold):
         dist = np.sqrt(np.sum(np.square(kpcd_e - npc_e), -1))  # k1 x k2
         argminfwd = np.argmin(dist, -1)  # k1
         kps.append(pc[argminfwd])
-    #for threshold in thresholds:
     npos = 0
     fp_sum = 0
     fn_sum = 0
@@ -123,15 +66,8 @@ def mIoU(threshold):
         fp_sum += np.count_nonzero(np.min(dist, -1) > threshold)
         fn_sum += np.count_nonzero(np.min(dist, -2) > threshold)
     print((npos - fn_sum) / (npos + fp_sum))
-    #yield (npos - fn_sum) / (npos + fp_sum)
 
 
-def mIoU_curve_plot():
-    import matplotlib.pyplot as plotlib
-    plotlib.style.use('seaborn')
-    miou_curve = list(mIoU(np.linspace(0., 0.1)))
-    plotlib.plot(np.linspace(0., 0.1), miou_curve)
-    plotlib.show()
 
 
 if __name__ == '__main__':
