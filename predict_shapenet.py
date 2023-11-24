@@ -11,12 +11,12 @@ import tqdm
 import numpy as np
 import argparse
 
-arg_parser = argparse.ArgumentParser(description="Predictor for Skeleton Merger on KeypointNet dataset. Outputs a npz file with two arrays: kpcd - (N, k, 3) xyz coordinates of keypoints detected; nfact - (N, 2) normalization factor, or max and min coordinate values in a point cloud.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-arg_parser.add_argument('-a', '--annotation-json', type=str, default='./shapenet/annotations/vessel.json',
+arg_parser = argparse.ArgumentParser(description="Predictor for Keypoint on KeypointNet dataset. Outputs a npz file with two arrays: kpcd - (N, k, 3) xyz coordinates of keypoints detected; nfact - (N, 2) normalization factor, or max and min coordinate values in a point cloud.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+arg_parser.add_argument('-a', '--annotation-json', type=str, default='./shapenet/annotations/chair.json',
                         help='Annotation JSON file path from KeypointNet dataset.')
 arg_parser.add_argument('-i', '--pcd-path', type=str, default='./shapenet/pcd',
                         help='Point cloud file folder path from KeypointNet dataset.')
-arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./shapenet/model/vessel_10_keynumber_10.pt',
+arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./shapenet/model/chair_10.pt',
                         help='Model checkpoint file path to load.')
 arg_parser.add_argument('-d', '--device', type=str, default='cuda',
                         help='Pytorch device for predicting.')
@@ -24,13 +24,13 @@ arg_parser.add_argument('-k', '--n-keypoint', type=int, default=10,
                         help='Requested number of keypoints to detect.')
 arg_parser.add_argument('-b', '--batch', type=int, default=8,
                         help='Batch size.')
-arg_parser.add_argument('-p', '--prediction-output', type=str, default='./shapenet/keypoint/vessel_ours.npz',
+arg_parser.add_argument('-p', '--prediction-output', type=str, default='./shapenet/keypoint/chair.npz',
                         help='Output file where prediction results are written.')
 arg_parser.add_argument('--max-points', type=int, default=2048,
                         help='Indicates maximum points in each input point cloud.')
 ns = arg_parser.parse_args()
 
-net = merger_net.Net(ns.max_points, ns.n_keypoint,0.5).cuda()
+net = merger_net.Net(ns.max_points, ns.n_keypoint).cuda()
 net.load_state_dict(torch.load(ns.checkpoint_path, map_location=torch.device(ns.device))['model_state_dict'])
 net.eval()
 
