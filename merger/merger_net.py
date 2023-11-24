@@ -15,9 +15,6 @@ torch.square = lambda x: x ** 2
 
 
 def gen_grid2d(grid_size: int, left_end: float=-1, right_end: float=1) -> torch.Tensor:
-    """
-    Generate a grid of size (grid_size, grid_size, 2) with coordinate values in the range [left_end, right_end]
-    """
     x = torch.linspace(left_end, right_end, 16)
     z = torch.linspace(left_end, right_end, 8)
     x, y, z = torch.meshgrid([x, x, z])
@@ -127,7 +124,7 @@ class Net(nn.Module):  # Skeleton Merger structure
         B,C,W  = input_x.shape
         normal_point = gen_grid2d(C,-1,1).cuda()
         point_cloud = torch.cat([input_x, input_x, input_x], -1)
-        kp_x, l3_feats,re_points,re_construct = self.PTW(point_cloud.permute(0, 2, 1))
+        kp_x, l3_feats,re_points,re_feature = self.PTW(point_cloud.permute(0, 2, 1))
         kp_x = self.PT_L(kp_x)
         if train == 'True':
             kp_heatmaps = F.softmax(kp_x.permute(0, 2, 1), -1)  # [n, k, npt]
@@ -143,7 +140,7 @@ class Net(nn.Module):  # Skeleton Merger structure
         feature_map =  feature_map * strengths.reshape(B, len(self.skeleton_idx[0]), 1)
         feature_map = feature_map.max(dim=1, keepdim=True)[0].transpose(1, 2)
         feature_map = torch.cat([feature_map,normal_point.repeat(B,1,1)], dim=-1)
-        reconstruct = self.decoder(feature_map,re_points,re_construct)
+        reconstruct = self.decoder(feature_map,re_points,re_feature)
         
         return kpcd, reconstruct
        
