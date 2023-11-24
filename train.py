@@ -75,7 +75,7 @@ if __name__ == '__main__':
     ns = arg_parser.parse_args()
     batch = ns.batch
     
-    x = np.loadtxt("./fold/for_chengkai_pants/seqdata.txt")
+    x = np.loadtxt("./shapenet/dataset/traindata14.txt")
     x = x.reshape(int(x.shape[0]/2048), 2048, 3)
     net = Net(ns.max_points, ns.n_keypoint).cuda()
     optimizer = optim.Adadelta(net.parameters(),lr=0.1,eps=1e-2)
