@@ -23,46 +23,23 @@ arg_parser.add_argument('-k', '--n-keypoint', type=int, default=10,
                         help='Requested number of keypoints to detect.')
 arg_parser.add_argument('-b', '--batch', type=int, default=8,
                         help='Batch size.')
-arg_parser.add_argument('-p', '--prediction-output', type=str, default='merger_prediction.npz',
-                        help='Output file where prediction results are written.')
 arg_parser.add_argument('--max-points', type=int, default=2048,
                         help='Indicates maximum points in each input point cloud.')
-ns = arg_parser.parse_args()
 
-net = merger_net.Net(ns.max_points, ns.n_keypoint,0.8).to(ns.device)
+ns = arg_parser.parse_args()
+net = merger_net.Net(ns.max_points, ns.n_keypoint).to(ns.device)
 net.load_state_dict(torch.load(ns.checkpoint_path, map_location=torch.device(ns.device))['model_state_dict'])
 net.eval()
 
-
-def naive_read_pcd(path):
-    lines = open(path, 'r').readlines()
-    idx = -1
-    for i, line in enumerate(lines):
-        if line.startswith('DATA ascii'):
-            idx = i + 1
-            break
-    lines = lines[idx:]
-    lines = [line.rstrip().split(' ') for line in lines]
-    data = np.asarray(lines)
-    pc = np.array(data[:, :3], dtype=np.float)
-    return pc
-
 out_kpcd = []
-out_nfact = []
-Q = []
-#pc = naive_read_pcd(r'{}/{}/{}.pcd'.format(ns.pcd_path, cid, mid))
-x = np.loadtxt("./fold/for_chengkai_pants/seqdata.txt")
-x = x.reshape(int(x.shape[0]/2048), 2048, 3)[:65]
 
+x = np.loadtxt("./fold/for_chengkai_pants/seqdata.txt")
+x = x.reshape(int(x.shape[0]/2048), 2048, 3)
 
 with torch.no_grad():
-     key_points, r1= net(torch.FloatTensor(x).to(ns.device),'True')
-        
-     #key_points = r1
+     key_points, r1= net(torch.FloatTensor(x).to(ns.device),'True')      
 for kp in key_points:
     out_kpcd.append(kp)
 for i in range(len(out_kpcd)):
     out_kpcd[i] = out_kpcd[i].cpu().numpy()
-#    print(out_kpcd[i].shape)
-#np.savez(ns.prediction_output, kpcd=out_kpcd, nfact=out_nfact)
-np.savetxt('./fold/keynumber/10_pant_keypoint.txt', np.array(out_kpcd).reshape(-1,np.array(out_kpcd).shape[-1]))    
+np.savetxt('./Shapenet/keypoint/chair_keypoint.txt', np.array(out_kpcd).reshape(-1,np.array(out_kpcd).shape[-1]))    
