@@ -39,7 +39,7 @@ python shapenet.py
 python train.py 
 </pre>
 ### Predict the keypoint
-**Predict the keypoint on the test dataset.** We get the keypoint predicted by the pointnet++ on the keypoint dataset that is manually annotated.
+**Predict the keypoint on the test dataset.** We get the keypoint predicted by the pointnet++ on the Keypoint dataset that is manually annotated. You should put the `json` from the Keypoint dataset into `./shapenet/annotations`. And you should assign the pcd from the Keypoint dataset into `./shapenet/pcd`.
 <pre>
 python predict_shapenet.py  
 </pre>
