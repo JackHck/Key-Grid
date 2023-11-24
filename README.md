@@ -50,14 +50,7 @@ python eval_shapenet.py
 </pre>
 
 ### Visualition
-In this section, we provide code to visualize keypoints and point cloud.\ 
-**Predict the keypoints on the test dataset.**  
-<pre> 
-python predict_keypoint.py  
-</pre>
-**Visualization results of keypoints and point cloud.** 
-<pre> 
-python vision.py  
-</pre>
+In this section, we provide code to visualize keypoints and point cloud. **1.Predict the keypoints on the test dataset.** 
+You should run  `predict_keypointt.py`; **2. Visualization results of keypoints and point cloud.** You should run  `vision.py`.
 ## Acknowledgement
 This code inherits some codes from [Skeleton Merger](https://github.com/eliphatfs/SkeletonMerger), [SC3K](https://github.com/IIT-PAVIS/SC3K).
