@@ -64,3 +64,8 @@ for i in range(40):
     x, xl = all_h5(DATASET, True, True, subclasses=(i,), sample=None)  # n x 2048 x 3
     x = x.reshape(-1, np.array(x).shape[-1])
     np.savetxt('./shapenet/dataset'+'/'+"traindata"+str(i)+".txt", x) 
+DATASET = './shapenet/test'
+for i in range(40):
+    x, xl = all_h5(DATASET, True, True, subclasses=(i,), sample=None)  # n x 2048 x 3
+    x = x.reshape(-1, np.array(x).shape[-1])
+    np.savetxt('./shapenet/dataset'+'/'+"testdata"+str(i)+".txt", x) 
