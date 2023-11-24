@@ -88,7 +88,6 @@ class PointNetReconstruct(nn.Module):
         if points1 is not None:
             points1 = points1.permute(0, 2, 1)
             new_points = torch.cat([points1, interpolated_points,new_feature], dim=-1)
-            #new_points = torch.cat([points1, interpolated_points], dim=-1)
         else:
             new_points = interpolated_points
 
@@ -138,9 +137,6 @@ class Decoder(nn.Module):
         self.fp4 = PointNetReconstruct(512+512+256+256+4, [256, 256])
         self.fp3 = PointNetReconstruct(128+128+256+4, [256, 256])
         self.fp2 = PointNetReconstruct(32+64+256+4, [256, 128])
-        #self.fp4 = PointNetReconstruct(512+512+256+256, [256, 256])
-        #self.fp3 = PointNetReconstruct(128+128+256, [256, 256])
-        #self.fp2 = PointNetReconstruct(32+64+256, [256, 128])
         self.fp1 = PointNetReconstruct(128, [128, 128, 128]) 
         self.decoder = MLPre()
         
