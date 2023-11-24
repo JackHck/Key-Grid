@@ -54,7 +54,6 @@ def save_kp_and_pc_in_pcd(pc, kp, output_dir, save=True, name=""):
             os.makedirs(output_dir+'/png')
         cloud = pv.read("{}/{}.ply".format(output_dir+'/ply', name))
         colors = cloud.point_data['RGB'] / 255.0 
-        # 创建一个Plotter对象并设置正交投影
         cloud.point_data['RGB'] = colors
         
         plotter = pv.Plotter(off_screen=True)
@@ -66,11 +65,7 @@ def save_kp_and_pc_in_pcd(pc, kp, output_dir, save=True, name=""):
         camera = plotter.camera
         camera.SetViewUp(0,1,0)
         plotter.screenshot(r"{}/{}.png".format(output_dir+'/png', name))
-        plotter = pv.Plotter(off_screen=True)
-        plotter.camera_parallel_projection = True
-        plotter.camera.SetParallelProjection(True)
         plotter.view_xy()
-        # 添加点云到Plotter
     else:
         o3d.visualization.draw_geometries([pcd])
     
