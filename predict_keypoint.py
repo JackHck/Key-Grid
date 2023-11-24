@@ -14,12 +14,8 @@ import open3d as o3d
 import os
 #from merger.pointnetpp.decoder import square_distance
 
-arg_parser = argparse.ArgumentParser(description="Predictor for Skeleton Merger on KeypointNet dataset. Outputs a npz file with two arrays: kpcd - (N, k, 3) xyz coordinates of keypoints detected; nfact - (N, 2) normalization factor, or max and min coordinate values in a point cloud.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-arg_parser.add_argument('-a', '--annotation-json', type=str, default='../keypointnet/annotations/chair.json',
-                        help='Annotation JSON file path from KeypointNet dataset.')
-arg_parser.add_argument('-i', '--pcd-path', type=str, default='../keypointnet/pcd',
-                        help='Point cloud file folder path from KeypointNet dataset.')
-arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./fold/model/pant_new_keypoint_10.pt',
+arg_parser = argparse.ArgumentParser(description="Predictor for Keypoint on KeypointNet dataset.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./Shapenet/model/chair_10.pt',
                         help='Model checkpoint file path to load.')
 arg_parser.add_argument('-d', '--device', type=str, default='cuda',
                         help='Pytorch device for predicting.')
