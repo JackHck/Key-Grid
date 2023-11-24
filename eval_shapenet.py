@@ -17,7 +17,7 @@ arg_parser.add_argument('-i', '--pcd-path', type=str, default='./shapenet/pcd',
                         help='Point cloud file folder path from KeypointNet dataset.')
 arg_parser.add_argument('-p', '--prediction', type=str, default='./shapenet/keypoint/chair.npz',
                         help='Prediction file from predictor output.')
-arg_parser.add_argument('--op-miou', default='True', 
+arg_parser.add_argument('--miou', default=0.1, 
                         help='Show miou value')
 
 
@@ -65,6 +65,7 @@ def mIoU(threshold):
         npos += len(np.min(dist, -2))
         fp_sum += np.count_nonzero(np.min(dist, -1) > threshold)
         fn_sum += np.count_nonzero(np.min(dist, -2) > threshold)
+    print('miou metric')  
     print((npos - fn_sum) / (npos + fp_sum))
 
 
@@ -75,5 +76,4 @@ if __name__ == '__main__':
     with open(ns.annotation_json) as data_file:
         kpn_ds = json.load(data_file)
     predicted = np.load(ns.prediction)
-    if ns.op_miou:
-        mIoU(0.1)
+    mIoU(ns.miou)
