@@ -12,7 +12,6 @@ import numpy as np
 import argparse
 import open3d as o3d
 import os
-#from merger.pointnetpp.decoder import square_distance
 
 arg_parser = argparse.ArgumentParser(description="Predictor for Keypoint on KeypointNet dataset.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='./Shapenet/model/chair_10.pt',
