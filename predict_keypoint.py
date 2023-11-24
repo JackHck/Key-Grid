@@ -20,8 +20,6 @@ arg_parser.add_argument('-d', '--device', type=str, default='cuda',
                         help='Pytorch device for predicting.')
 arg_parser.add_argument('-k', '--n-keypoint', type=int, default=10,
                         help='Requested number of keypoints to detect.')
-arg_parser.add_argument('-b', '--batch', type=int, default=8,
-                        help='Batch size.')
 arg_parser.add_argument('--max-points', type=int, default=2048,
                         help='Indicates maximum points in each input point cloud.')
 
