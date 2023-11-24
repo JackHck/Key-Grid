@@ -1,6 +1,5 @@
 # Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features
 
-
 This repository provides the  code for paper: <br>
 **Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features**
 <p align="center">
@@ -25,72 +24,40 @@ In addition, we achieve SE-(3) invariance of keypoints though generalizing Key-G
 * [Deep Fashion3D dataset](https://github.com/GAP-LAB-CUHK-SZ/deepFashion3D)
 * Python ≥ 3.6
 * PyTorch ≥ 1.4
-* scikit-learn
+* Scikit-learn
 * Open3d
-* pyvista
+* Pyvista
 ## ShapeNet dataset
 ### Get dataset from ShapeNet
-From the `./h5` get the point cloud. You should put the shapenet dataset in the `./shapenet` folder, run:
-<pre>python SimCLR/main.py \ 
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --lr 0.5\
-  --batch_size 1024 \
-  --temperature 0.1 
+**From the `./h5` get the point cloud.** You should put the shapenet dataset in the `./shapenet` folder, the training dataset and the testing dataset from the shapenet net dataset are respectively placed in the `./shapenet/train` folder and the `./shapenet/test` folder. run:
+<pre>
+python shapenet.py 
 </pre>
 ### Train the network
-
-<pre>python SimCLR/linear_classify.py  \
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --train_rule 'DRW' \
-  --epochs 200 
+**Train the pointnet++ on the train dataset.** Here, we take the chair category as an example. Note, if you want to train other categories, you should change the dataset root.
+<pre>
+python train.py 
 </pre>
-### Predict the keypoint 
-<pre>python SimCLR/linear_classify.py  \
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --train_rule 'DRW' \
-  --epochs 200 
+### Predict the keypoint
+**Predict the keypoint on the test dataset.** We get the keypoint predicted by the pointnet++ on the keypoint dataset that is manually annotated.
+<pre>
+python predict_shapenet.py  
 </pre>
 ### Evulate the keypoint
-<pre>python SimCLR/linear_classify.py  \
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --train_rule 'DRW' \
-  --epochs 200 
+**mIoU Metric.** We evualate the performance of pointnet++ on the keypoint dataset. We use the mIoU metric to measure the quality of keypoints.
+<pre>
+python eval_shapenet.py 
 </pre>
 
-## ClothesNet dataset
-### Get dataset from ClothesNet
-<pre>python SimCLR/main.py \ 
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --lr 0.5\
-  --batch_size 1024 \
-  --temperature 0.1 
-</pre>
-### Train the network
-<pre>python SimCLR/linear_classify.py  \
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --train_rule 'DRW' \
-  --epochs 200 
-</pre>
-### Predict the keypoint 
-<pre> python SimCLR/linear_classify.py  \
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --train_rule 'DRW' \
-  --epochs 200 
-</pre>
 ### Visualition
-<pre> python SimCLR/linear_classify.py  \
-  --dataset 'cifar100' \ 
-  --imb_factor 0.01 \
-  --train_rule 'DRW' \
-  --epochs 200 
+In this section, we provide code to visualize keypoints and point cloud.\
+**Predict the keypoints on the test dataset. **
+<pre> 
+    python predict_keypoint.py  
 </pre>
-
+**Visualization results of keypoints and point cloud. **
+<pre> 
+    python vision.py  
+</pre>
 ## Acknowledgement
-This code inherits some codes from [Skeleton Merger](https://github.com/eliphatfs/SkeletonMerger).
+This code inherits some codes from [Skeleton Merger](https://github.com/eliphatfs/SkeletonMerger), [SC3K](https://github.com/IIT-PAVIS/SC3K).
