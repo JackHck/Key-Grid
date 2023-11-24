@@ -14,7 +14,7 @@ import numpy
 import numpy as np
 from merger.data_flower import all_h5
 from merger.merger_net import Net
-from merger.composed_chamfer import composed_sqrt_chamfer,loss_all
+from merger.composed_chamfer import loss_all
 
 
 arg_parser = argparse.ArgumentParser(description="Training Key_Grid")
