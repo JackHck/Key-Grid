@@ -53,7 +53,7 @@ def feed(net, optimizer, x_set, train, shuffle, batch, epoch, ns):
             if train:
                 optimizer.zero_grad()
             keypoint, reconstruct = net(batch_x, 'True')
-            loss = loss_all(batch_x, keypoint, reconstruct,epoch,ns)
+            loss = loss_all(batch_x, keypoint, reconstruct, epoch, ns)
             running_init_points += loss['init_points']
             if epoch> ns.chamfer:
                 running_chamfer += loss['chamfer']
