@@ -83,26 +83,9 @@ def mask_feature (input, mask_rate):
         else:
             return input
         
-def draw_lines(normal_point,paired_joints):
-        bs, n_points, _, _ = paired_joints.shape
-        start = paired_joints[:, :, 0, :]   # (batch_size, n_points, 3)
-        end = paired_joints[:, :, 1, :]     # (batch_size, n_points, 3)
-        paired_diff = end - start           # (batch_size, n_points, 3)
-        grid = normal_point.reshape(1, 1, -1, 3)
-        diff_to_start = grid - start.unsqueeze(-2)  # (batch_size, n_points,2048, 3)
-        t = (diff_to_start @ paired_diff.unsqueeze(-1)).squeeze(-1) / (1e-8+paired_diff.square().sum(dim=-1, keepdim=True))
 
-        diff_to_end = grid - end.unsqueeze(-2)  # (batch_size, n_points, 2048, 3)
-
-        before_start = (t <= 0).float() * diff_to_start.square().sum(dim=-1)
-        after_end = (t >= 1).float() * diff_to_end.square().sum(dim=-1)
-        between_start_end = (0 < t).float() * (t < 1).float() * (grid - (start.unsqueeze(-2) + t.unsqueeze(-1) * paired_diff.unsqueeze(-2))).square().sum(dim=-1)
-
-        squared_dist = (before_start + after_end + between_start_end).reshape(bs, n_points,2048)
-        heatmaps = torch.exp(- squared_dist / 2.5e-3)
-        return heatmaps
 class Net(nn.Module):  # Skeleton Merger structure
-    def __init__(self, npt, k,rate):
+    def __init__(self, npt, k):
         super().__init__()
         self.npt = npt
         self.k = k
@@ -143,10 +126,6 @@ class Net(nn.Module):  # Skeleton Merger structure
     def forward(self, input_x,train):
         B,C,W  = input_x.shape
         normal_point = gen_grid2d(C,-1,1).cuda()
-        #mean_input = (torch.max(input_x, dim=1)[0]+ torch.min(input_x, dim=1)[0])/2
-        #std_input = (torch.max(input_x, dim=1)[0] -torch.min(input_x, dim=1)[0])/(C*2)
-        #normal_point = torch.normal(mean =  mean_input.unsqueeze(1).repeat(1,C,1), std =std_input.unsqueeze(1).repeat(1,C,1),out =input_x) #[n,N,3]
-        mask_input =  mask_feature (input_x, self.rate).cuda()
         point_cloud = torch.cat([input_x, input_x, input_x], -1)
         kp_x, l3_feats,re_points,re_construct = self.PTW(point_cloud.permute(0, 2, 1))
         kp_x = self.PT_L(kp_x)
@@ -164,10 +143,6 @@ class Net(nn.Module):  # Skeleton Merger structure
         feature_map =  feature_map * strengths.reshape(B, len(self.skeleton_idx[0]), 1)
         feature_map = feature_map.max(dim=1, keepdim=True)[0].transpose(1, 2)
         feature_map = torch.cat([feature_map,normal_point.repeat(B,1,1)], dim=-1)
-        #feature_1, feature_2 = torch.split(feature_map, int(B/2), dim = 0)
-        #mask_input_1, mask_input_2 = torch.split(mask_input, int(B/2), dim=0)
-        #reconstruct_1 = self.decoder(feature_2, mask_input_1)
-        #reconstruct_2 = self.decoder(feature_1, mask_input_2)
         reconstruct = self.decoder(feature_map,re_points,re_construct)
         
         return kpcd, reconstruct
