@@ -27,6 +27,7 @@ In addition, we achieve SE-(3) invariance of keypoints though generalizing Key-G
 * Scikit-learn
 * Open3d
 * Pyvista
+* Pytorch3d
 ## ShapeNet dataset
 ### Get dataset from ShapeNet
 **From the `./h5` get the point cloud.** You should put the shapenet dataset in the `./shapenet` folder, the training dataset and the testing dataset from the shapenet net dataset are respectively placed in the `./shapenet/train` folder and the `./shapenet/test` folder. run:
