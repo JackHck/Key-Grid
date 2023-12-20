@@ -81,12 +81,11 @@ def mask_feature (input, mask_rate):
             return input
         
 
-class Net(nn.Module):  # Skeleton Merger structure
+class Net(nn.Module): 
     def __init__(self, npt, k):
         super().__init__()
         self.npt = npt
         self.k = k
-        self.rate = rate
         self.PTW = PointNetPP(k)
         self.PT_L = nn.Linear(k, k)
         self.skeleton_idx = torch.triu_indices(k, k, offset=1)
