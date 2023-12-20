@@ -100,7 +100,7 @@ class Net(nn.Module):
                 DECN.append(Head())
             self.DEC.append(DECN)
 
-    def draw_lines(normal_point,paired_joints):
+    def draw_lines(self,normal_point,paired_joints):
         bs, n_points, _, _ = paired_joints.shape
         start = paired_joints[:, :, 0, :]   # (batch_size, n_points, 3)
         end = paired_joints[:, :, 1, :]     # (batch_size, n_points, 3)
@@ -135,7 +135,7 @@ class Net(nn.Module):
         paired_joints = torch.stack([kpcd[:,self.skeleton_idx[0],:], kpcd[:,self.skeleton_idx[1],:]], dim=2)
         global_feats = F.max_pool1d(l3_feats, 16).squeeze()
         strengths = F.sigmoid(self.MA_L(self.MA(global_feats)))
-        feature_map = draw_lines(normal_point, paired_joints)
+        feature_map = self.draw_lines(normal_point, paired_joints)
         feature_map =  feature_map * strengths.reshape(B, len(self.skeleton_idx[0]), 1)
         feature_map = feature_map.max(dim=1, keepdim=True)[0].transpose(1, 2)
         feature_map = torch.cat([feature_map,normal_point.repeat(B,1,1)], dim=-1)
