@@ -13,4 +13,4 @@ keypoint = np.loadtxt(r"./shapenet/keypoint/chair_keypoint.txt") #   keypoint.tx
 keypoint = keypoint.reshape(int(keypoint.shape[0]/10), 10, 3)
 
 for i in range(keypoint.shape[0]):
-   visualizer.save_kp_and_pc_in_pcd(pointcloud[i],keypoint[i], '{}_visualizations'.format(r'./shapenet/visual/chair.txt'), save=True,name="{}".format(i))
+   visualizer.save_kp_and_pc_in_pcd(pointcloud[i],keypoint[i], '{}_visualizations'.format(r'./shapenet/visual/chair'), save=True,name="{}".format(i))
