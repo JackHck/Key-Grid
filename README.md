@@ -1,4 +1,4 @@
-# [NeurIPS 2024]Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features
+# [NeurIPS 2024] Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features
 
 This repository provides the  code for paper: <br>
 **Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features**
