@@ -1,4 +1,5 @@
 # [NeurIPS 2024] Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features
+[![Arxiv](https://img.shields.io/badge/ArXiv-2109.11377-orange.svg)](https://arxiv.org/abs/2410.02237) 
 
 This repository provides the  code for paper: <br>
 **Key-Grid: Unsupervised 3D Keypoints Detection using Grid Heatmap Features**
@@ -18,40 +19,31 @@ Key-Grid achieves the state-of-the-art performance on the semantic consistency a
 Moreover, we demonstrate the robustness of Key-Gridto noise and downsampling. 
 In addition, we achieve SE-(3) invariance of keypoints though generalizing Key-Grid to a SE(3)-invariant backbone.
 ## Requiremenmts
-* [ShapeNet dataset](https://github.com/qq456cvb/KeypointNet)
-* [KeypointNet dataset](https://github.com/qq456cvb/KeypointNet)
 * [ClothesNet dataset](https://sites.google.com/view/clothesnet/home)
-* [Deep Fashion3D dataset](https://github.com/GAP-LAB-CUHK-SZ/deepFashion3D)
-* Python ≥ 3.6
 * PyTorch ≥ 1.4
 * Scikit-learn
 * Open3d
 * Pyvista
 * Pytorch3d
-## ShapeNet dataset
-### Get dataset from ShapeNet
-**From the `./h5` get the point cloud.** You should put the shapenet dataset in the `./shapenet` folder, the training dataset and the testing dataset from the shapenet net dataset are respectively placed in the `./shapenet/train` folder and the `./shapenet/test` folder. run:
-<pre>
-python shapenet.py 
-</pre>
+## ClothesNet dataset
 ### Train the network
 **Train the pointnet++ on the train dataset.** Here, we take the chair category as an example. Note, if you want to train other categories, you should change the dataset root.
 <pre>
 python train.py 
 </pre>
 ### Predict the keypoint
-**Predict the keypoint on the test dataset.** We get the keypoint predicted by the pointnet++ on the Keypoint dataset that is manually annotated. You should put the `json` from the Keypoint dataset into `./shapenet/annotations`. And you should assign the pcd from the Keypoint dataset into `./shapenet/pcd`.
+**Predict the keypoint on the test dataset.** We get the keypoint predicted by the pointnet++ on the ClothesNet dataset.
 <pre>
-python predict_shapenet.py  
+python predict_keypoint.py  
 </pre>
-### Evulate the keypoint
-**mIoU Metric.** We evualate the performance of pointnet++ on the keypoint dataset. We use the mIoU metric to measure the quality of keypoints.
-<pre>
-python eval_shapenet.py 
-</pre>
-
 ### Visualition
 In this section, we provide code to visualize keypoints and point cloud. **1.Predict the keypoints on the test dataset.** 
-You should run  `predict_keypointt.py`; **2. Visualization results of keypoints and point cloud.** You should run  `vision.py`.
+You should run  `predict_keypoint.py`; **2. Visualization results of keypoints and point cloud.** You should run  `vision.py`.
+## Video
+<video width="320" height="240" controls>
+  <source src="https://example.com/path/to/example_video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Acknowledgement
 This code inherits some codes from [Skeleton Merger](https://github.com/eliphatfs/SkeletonMerger), [SC3K](https://github.com/IIT-PAVIS/SC3K).
