@@ -41,8 +41,7 @@ In this section, we provide code to visualize keypoints and point cloud. **1.Pre
 You should run  `predict_keypoint.py`; **2. Visualization results of keypoints and point cloud.** You should run  `vision.py`.
 ## Video
 <video width="320" height="240" controls>
-  <source src="https://example.com/path/to/example_video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+  <source src="./imgae/fold.mp4" type="video/mp4">
 </video>
 
 ## Acknowledgement
