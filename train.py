@@ -58,7 +58,6 @@ def feed(net, optimizer, x_set, train, shuffle, batch, epoch, ns):
             running_init_points += loss['init_points']
             if epoch> ns.chamfer:
                 running_chamfer += loss['chamfer']
-                running_smoothing += loss['smoothing']
             loss = sum(loss.values())
         
             if train:
