@@ -13,7 +13,7 @@ import argparse
 import open3d as o3d
 import os
 
-arg_parser = argparse.ArgumentParser(description="Predictor for Keypoint on KeypointNet dataset.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+arg_parser = argparse.ArgumentParser(description="Predictor for Keypoint on Clothesnet dataset.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='Key_Grid/model/foldpant.pt',
                         help='Model checkpoint file path to load.')
 arg_parser.add_argument('-d', '--device', type=str, default='cuda',
