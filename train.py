@@ -17,7 +17,7 @@ from merger.merger_net import Net
 from merger.composed_chamfer import loss_all
 
 
-arg_parser = argparse.ArgumentParser(description="Training Key_Grid for the PointNet++ on the ShapeNet dataset.")
+arg_parser = argparse.ArgumentParser(description="Training Key_Grid for the PointNet++ on the ClothesNet dataset.")
 arg_parser.add_argument('-m', '--checkpoint-path', '--model-path', type=str, default='Key_Grid/model/foldpant.pt',
                         help='Model checkpoint file path for saving.')
 arg_parser.add_argument('-k', '--n-keypoint', type=int, default=8,
